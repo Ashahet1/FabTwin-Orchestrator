@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FabTwin.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ae194ae9a87ae3346af9ea363e062f12c93c32a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da9a6061078000a09e278fa49db4f1e4aab38d51")]
 [assembly: System.Reflection.AssemblyProductAttribute("FabTwin.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FabTwin.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
