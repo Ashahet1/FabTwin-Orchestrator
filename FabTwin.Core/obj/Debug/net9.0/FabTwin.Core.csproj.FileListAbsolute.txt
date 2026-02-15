@@ -1,0 +1,11 @@
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/bin/Debug/net9.0/FabTwin.Core.deps.json
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/bin/Debug/net9.0/FabTwin.Core.dll
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/bin/Debug/net9.0/FabTwin.Core.pdb
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.AssemblyInfoInputs.cache
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.AssemblyInfo.cs
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.csproj.CoreCompileInputs.cache
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.dll
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/refint/FabTwin.Core.dll
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/FabTwin.Core.pdb
+/Users/vaibhav/Desktop/Riddhi/fabtwin-Orchestrator/FabTwin.Core/obj/Debug/net9.0/ref/FabTwin.Core.dll

@@ -1,0 +1,140 @@
+@page "/"
+@using FabTwin.Core.Engine
+@using FabTwin.Core.Models
+@using FabTwin.Core.Data
+@inject FabSimEngine Engine
+@inject EventStore Store
+@rendermode InteractiveServer
+
+<PageTitle>FabTwin Dashboard</PageTitle>
+
+<h1>FabTwin Orchestrator - Digital Twin Test</h1>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h3>Scenario Runner</h3>
+        <button class="btn btn-primary" @onclick="RunScenario" disabled="@isRunning">
+            @(isRunning ? "Running..." : "Run TempDrift Scenario")
+        </button>
+    </div>
+</div>
+
+@if (events.Any())
+{
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Telemetry Events</h3>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Phase</th>
+                        <th>Yield %</th>
+                        <th>Temp °C</th>
+                        <th>Cal Offset</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var evt in events)
+                    {
+                        <tr>
+                            <td>@evt.Timestamp.ToString("HH:mm:ss")</td>
+                            <td>@evt.Phase</td>
+                            <td>@evt.YieldPercent.ToString("F1")</td>
+                            <td>@evt.Temperature.ToString("F1")</td>
+                            <td>@evt.CalibrationOffset.ToString("F3")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(summary))
+{
+    <div class="alert alert-success mt-4">
+        <h4>@summary</h4>
+    </div>
+}
+
+@code {
+    private bool isRunning = false;
+    private List<EventDisplay> events = new();
+    private string summary = "";
+
+    private async Task RunScenario()
+    {
+        isRunning = true;
+        events.Clear();
+        summary = "";
+
+        var runId = Engine.StartRun(ScenarioId.TempDrift, seed: 42, severity: 0.8);
+
+        // Baseline
+        for (int i = 0; i < 3; i++)
+        {
+            var telemetry = Engine.GenerateTelemetry(runId);
+            events.Add(new EventDisplay { 
+                Timestamp = telemetry.Timestamp,
+                Phase = "Baseline",
+                YieldPercent = telemetry.YieldPercent,
+                Temperature = telemetry.Temperature,
+                CalibrationOffset = telemetry.CalibrationOffset
+            });
+            StateHasChanged();
+            await Task.Delay(500);
+        }
+
+        // Inject Fault
+        Engine.InjectFault(runId);
+
+        for (int i = 0; i < 3; i++)
+        {
+            var telemetry = Engine.GenerateTelemetry(runId);
+            events.Add(new EventDisplay { 
+                Timestamp = telemetry.Timestamp,
+                Phase = "Faulty",
+                YieldPercent = telemetry.YieldPercent,
+                Temperature = telemetry.Temperature,
+                CalibrationOffset = telemetry.CalibrationOffset
+            });
+            StateHasChanged();
+            await Task.Delay(500);
+        }
+
+        // Apply Actions
+        var action1 = new ActionCommand(runId, "COOLDOWN", new Dictionary<string, object>(), "Temp too high");
+        Engine.ApplyAction(runId, action1);
+        
+        var action2 = new ActionCommand(runId, "RECALIBRATE", new Dictionary<string, object>(), "Cal drift");
+        Engine.ApplyAction(runId, action2);
+
+        // Recovery
+        for (int i = 0; i < 3; i++)
+        {
+            var telemetry = Engine.GenerateTelemetry(runId);
+            events.Add(new EventDisplay { 
+                Timestamp = telemetry.Timestamp,
+                Phase = "Recovery",
+                YieldPercent = telemetry.YieldPercent,
+                Temperature = telemetry.Temperature,
+                CalibrationOffset = telemetry.CalibrationOffset
+            });
+            StateHasChanged();
+            await Task.Delay(500);
+        }
+
+        summary = "✅ Scenario complete! Yield recovered from faulty state.";
+        isRunning = false;
+    }
+
+    class EventDisplay
+    {
+        public DateTime Timestamp { get; set; }
+        public string Phase { get; set; } = "";
+        public double YieldPercent { get; set; }
+        public double Temperature { get; set; }
+        public double CalibrationOffset { get; set; }
+    }
+}
